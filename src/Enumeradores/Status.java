@@ -1,0 +1,6 @@
+package Enumeradores;
+
+public enum Status {
+	ATIVA,INATIVA,BLOQUEADA,AGUANDANDO_APROVACAO,EM_PROCESSSO_DE_BAIXA;
+
+}
