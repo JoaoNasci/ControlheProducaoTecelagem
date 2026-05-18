@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import EnderecoContatos.*;
 import Enumeradores.Sexo;
 
-public class PessoaFisica extends Pessoa {
+public abstract class PessoaFisica extends Pessoa {
 	private String cpf;
 	private LocalDate dataNascimento;
 	private Sexo sexo;
