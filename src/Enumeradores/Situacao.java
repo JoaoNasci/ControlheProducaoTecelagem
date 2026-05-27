@@ -1,0 +1,5 @@
+package Enumeradores;
+
+public enum Situacao {
+	LIGADA, PARADA, SEM_OPERADOR, MANUTENCAO, TROCA_DE_ARTIGO, FALTA_MATÉRIA_PRIMA, SEM_PROGRAMACAO;
+}

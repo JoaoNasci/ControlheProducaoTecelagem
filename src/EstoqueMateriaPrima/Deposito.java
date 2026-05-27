@@ -1,5 +1,6 @@
 package EstoqueMateriaPrima;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import EnderecoContatos.Endereco;
@@ -7,18 +8,21 @@ import EnderecoContatos.Endereco;
 public class Deposito {
 	private String nome;
 	private Endereco endereco;
-	private List<MateriaPrima> itens;
-	private String estente;
+	private List<MateriaPrima> itens = new ArrayList<>();
+	private String estante;
 	private double capacidadeMaxima ;
 	private double capacidadeAtual;
 	
 	public Deposito() {
 		nome = null;
 		endereco = null;
-		itens = null;
-		estente = null;
+		estante = null;
 		capacidadeAtual = 0;
 		
+	}
+	
+	public Deposito(double capacidadeMaxima) {
+		definirCapacidadeMaxima(capacidadeMaxima);
 	}
 	
 	public Deposito(String nome, Endereco endereco, MateriaPrima itens, String estente ) {
@@ -26,8 +30,6 @@ public class Deposito {
 		this.setEndereco(endereco);
 		this.setItens(itens);
 		this.setEstente(estente);
-		this.Ocupacidade(itens.getPeso());
-		
 		
 	}
 	
@@ -51,16 +53,23 @@ public class Deposito {
 		return itens;
 	}
 	
-	public void setItens(MateriaPrima itens) {
-		this.itens.add(itens);
+	public void setItens(MateriaPrima materiaPrima) {
+		if (this.capacidadeAtual + materiaPrima.getPeso() <= this.capacidadeMaxima) {
+			this.capacidadeAtual += materiaPrima.getPeso();
+			this.itens.add(materiaPrima);
+		} else {
+			System.out.println("Capacidade máxima excedida. Não é possível adicionar o item.");
+
+		}
+		
 	}
 	
 	public String getEstente() {
-		return estente;
+		return estante;
 	}
 	
 	public void setEstente(String estente) {
-		this.estente = estente;
+		this.estante = estente;
 	}
 	
 	public void definirCapacidadeMaxima(double capacidadeMaxima) {
@@ -76,23 +85,22 @@ public class Deposito {
 		return capacidadeAtual;
 	}
 	
-	public void Ocupacidade(double ocupacidade) {
-		if (this.capacidadeAtual + ocupacidade <= this.capacidadeMaxima) {
-			this.capacidadeAtual += ocupacidade;
-		} else {
-			System.out.println("Capacidade máxima excedida. Não é possível adicionar o item.");
-		}
-	}
-	
+
 	@Override
 	public String toString() {
 		String str = "Nome: " + this.getNome() + "\n";
 		str += "Endereço: " + this.getEndereco() + "\n";
-		str += "Itens: " + this.getItens() + "\n";
 		str += "Estante: " + this.getEstente() + "\n";
 		str += "Capacidade Máxima: " + this.getCapacidadeMaxima() + "\n";
 		str += "Capacidade Atual: " + this.getCapacidadeAtual() + "\n";
-		
+		str += " Itens no Depósito \n";
+			if (this.getItens().isEmpty()) {
+				str += "Nenhum item no depósito.\n";
+			}else {
+				for (MateriaPrima item : this.getItens()) {
+					str += item.toString() + "\n";
+				}
+			}
 		return str;
 	}
 	
