@@ -28,14 +28,13 @@ public class Producao {
 	}
 	
 	public Producao(int id, Pedido pedido,Funcionario funcionario, Maquina equipamento,
-			double quantidadePlanejada, Fio fio, Malha saida, double qntProduzida, int qualidade) {
+			double quantidadePlanejada, Fio fio, double qntProduzida, int qualidade) {
 		this.setId(id);
 		this.setPedido(pedido);
 		this.setOperador(funcionario);
 		this.setMaquina(equipamento);
 		this.setQuantidadePlanejada(quantidadePlanejada);
 		this.setEntrada(fio);
-		this.setSaida(saida);
 		this.setQntProduzida(qntProduzida);
 		this.setQualidade(qualidade);
 		
