@@ -5,7 +5,7 @@ import EnderecoContatos.*;
 public abstract class Pessoa {
 	private String nome;
 	private Endereco endereco;
-	private Telefone telefone;
+	private String telefone;
 	private String email;
 	
 	public Pessoa() {
@@ -15,7 +15,7 @@ public abstract class Pessoa {
 		this.email = null;
 	}
 	
-	public Pessoa(String nome, Endereco endereco, Telefone telefone, String email) {
+	public Pessoa(String nome, Endereco endereco, String telefone, String email) {
 		this.setNome(nome);
 		this.setEndereco(endereco);
 		this.setTelefone(telefone);
@@ -38,11 +38,11 @@ public abstract class Pessoa {
 		this.endereco = endereco;
 	}
 	
-	public Telefone getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
 	
-	public void setTelefone(Telefone telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 	

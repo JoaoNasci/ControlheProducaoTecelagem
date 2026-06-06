@@ -16,7 +16,7 @@ public abstract class PessoaFisica extends Pessoa {
 		
 	}
 	
-	public PessoaFisica(String nome, Endereco endereco, Telefone telefone, String email, String cpf, LocalDate dataNascimento, String sexo) {
+	public PessoaFisica(String nome, Endereco endereco, String telefone, String email, String cpf, LocalDate dataNascimento, String sexo) {
 		super(nome, endereco, telefone, email);
 		this.setCpf(cpf);
 		this.setDataNascimento(dataNascimento);

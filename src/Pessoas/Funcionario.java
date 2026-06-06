@@ -7,22 +7,22 @@ import Enumeradores.*;
 
 public class Funcionario extends PessoaFisica {
 	private String pis;
-	private String numeroCadastro;
+	private int numeroCadastro;
 	private LocalDate dataAdmissao;
 	private Cargo cargo;
 	private Turno turno;
 	
 	public Funcionario() {
 		this.pis = null;
-		this.numeroCadastro = null;
+		this.numeroCadastro = 0;
 		this.dataAdmissao = null;
 		this.cargo = null;
 		this.turno = null;
 		
 	}
 	
-	public Funcionario(String nome, Endereco endereco, Telefone telefone, String email, String cpf
-					,  LocalDate dataNascimento, String sexo,String pis, String numeroCadastro, 
+	public Funcionario(String nome, Endereco endereco, String telefone, String email, String cpf
+					,  LocalDate dataNascimento, String sexo,String pis, int numeroCadastro, 
 					String dataAdmissao, String cargo, String turno) {
 		
 		super(nome, endereco, telefone, email, cpf, dataNascimento, sexo);
@@ -42,11 +42,11 @@ public class Funcionario extends PessoaFisica {
 		this.pis = pis;
 	}
 	
-	public String getNumeroCadastro() {
+	public int getNumeroCadastro() {
 		return numeroCadastro;
 	}
 	
-	public void setNumeroCadastro(String numeroCadastro) {
+	public void setNumeroCadastro(int numeroCadastro) {
 		this.numeroCadastro = numeroCadastro;
 	}
 	

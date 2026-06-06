@@ -3,7 +3,7 @@ package Pessoas;
 import java.time.LocalDate;
 
 import EnderecoContatos.*;
-import Enumeradores.*;
+
 
 public class Fornecedor extends PessoaJuridica {
 	
@@ -15,9 +15,9 @@ public class Fornecedor extends PessoaJuridica {
 		this.prazoEntrega = 0;
 	}
 	
-	public Fornecedor(String nome, Endereco endereco, Telefone telefone, String email, String cnpj,
-			String inscricaoEstadual, String nomeFantasia, String porteEmpresa, LocalDate dataFundacao,
-			String status, String categoriaProduto, short prazoEntrega) {
+	public Fornecedor(String nome, Endereco endereco, String telefone, String email, String cnpj,
+					  String inscricaoEstadual, String nomeFantasia, String porteEmpresa, LocalDate dataFundacao,
+					  String status, String categoriaProduto, short prazoEntrega) {
 		
 		super(nome, endereco, telefone, email, cnpj, inscricaoEstadual, nomeFantasia, porteEmpresa, dataFundacao,
 				status);

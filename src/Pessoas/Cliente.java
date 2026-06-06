@@ -17,7 +17,7 @@ public class Cliente extends PessoaJuridica {
 		
 	}
 	
-	public Cliente(String nome, Endereco endereco, Telefone telefone, String email, String cnpj,
+	public Cliente(String nome, Endereco endereco, String telefone, String email, String cnpj,
 			String inscricaoEstadual, String nomeFantasia, String porteEmpresa, LocalDate dataFundacao,
 			String status, String razaoSocial, double limiteCredito, String ramoAtividade) {
 		

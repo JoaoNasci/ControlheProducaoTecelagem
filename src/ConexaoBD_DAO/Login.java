@@ -25,7 +25,17 @@ public class Login {
 		this.senha = senha;
 	}
 	
-	
+	public boolean validarLogin(String email, String senha) {
+		// Lógica de validação do login (exemplo simples)
+		if (email.equals("") || senha.equals("")) {
+			return false; 
+		}else {
+			return true; 
+		}
+			
+		
+		
+	}
 	
 
 }
