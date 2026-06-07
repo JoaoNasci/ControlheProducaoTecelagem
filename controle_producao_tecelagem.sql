@@ -1,7 +1,6 @@
 
 CREATE database `controle_producao_tecelagem`;
 USE `controle_producao_tecelagem` ;
-
 -- drop database  `controle_producao_tecelagem` ;
 
 CREATE TABLE `Endereco` (
@@ -36,9 +35,9 @@ CREATE TABLE `Funcionario` (
   `turno` VARCHAR(20) NOT NULL,
     FOREIGN KEY (`Fk_endereco`) REFERENCES `Endereco` (`idEndereco`)
     );
-
+    
 insert into Funcionario values (null, 'João Pedro', 1, '(47) 9 32851753', 'test@hotmail',
- '847354575827', 1840-08-02, 'Masculino', '23432345678', now(),'Tecelão III','3ºTurno' );
+ '847354575827', '1840-08-02', 'Masculino', '23432345678', now(),'Tecelão III','3ºTurno' );
 select * from funcionario;
 
 CREATE TABLE `Cliente` (
@@ -57,8 +56,11 @@ CREATE TABLE `Cliente` (
   `ramoAtividade` VARCHAR(45) NOT NULL,
     FOREIGN KEY (`FK_endereco`) REFERENCES `Endereco` (`idEndereco`)
    );
-
-
+   
+INSERT INTO Cliente VALUES ('12345678000199', 'Malhas Blumenau Ltda', 1, '(47) 3322-1111', 'compras@malhasblumenau.com',
+ '123456789', 'Malhas Blumenau', 'M', '2015-04-10', 'Ativo', 'Malhas Blumenau Indústria e Comércio S/A', 50000.00, 'Confecção');
+ select * from Cliente;
+ 
 CREATE TABLE `Fornecedor` (
   `cnpj` VARCHAR(20) primary key NOT NULL unique,
   `nome` VARCHAR(45) NOT NULL,
@@ -75,7 +77,10 @@ CREATE TABLE `Fornecedor` (
     FOREIGN KEY (`FK_endereco`) REFERENCES `Endereco` (`idEndereco`)
     );
 
-
+INSERT INTO Fornecedor VALUES 
+('98765432000188', 'Fiação Vale do Itajaí', 1, '(47) 3333-2222', 'vendas@fiacaovale.com', '987654321', 
+'Fiação Vale', 'G', '2010-08-25', 'Ativo', 'Fios de Algodão e Poliéster', 5);
+select * from Fornecedor;
 
 CREATE TABLE `Deposito` (
   `idDeposito` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -87,7 +92,8 @@ CREATE TABLE `Deposito` (
     FOREIGN KEY (`FK_endereco`) REFERENCES `Endereco` (`idEndereco`)
     );
 
-
+INSERT INTO Deposito VALUES (null,'Depósito Central de Fios', 1, 'A1', 10000.00, 0.00);
+select * from Deposito;
 
 CREATE TABLE `Pedido` (
   `idPedido` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -100,6 +106,9 @@ CREATE TABLE `Pedido` (
     FOREIGN KEY (`FK_cliente`) REFERENCES `Cliente` (`cnpj`)
    );
 
+INSERT INTO Pedido  VALUES (null,'2026-06-01', '2026-06-15', 1500.00, '12345678000199', 
+'Pedido de malha moletom para coleção de inverno', 'Em Produção');
+select * from Pedido;
 
 CREATE TABLE `Malha` (
   `idMalha` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -113,7 +122,8 @@ CREATE TABLE `Malha` (
     FOREIGN KEY (`FK_fornecedor`) REFERENCES `Fornecedor` (`cnpj`)
    );
 
-
+INSERT INTO Malha VALUES (null,'98765432000188', 'Azul Marinho', 250.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+select * from Malha;
 
 CREATE TABLE `Producao` (
   `idProducao` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -126,7 +136,8 @@ CREATE TABLE `Producao` (
     FOREIGN KEY (`saida`) REFERENCES `Malha` (`idMalha`)
     );
 
-
+INSERT INTO Producao VALUES (null,1, '1500 kg', 1, 450.00, 'Primeira Qualidade');
+select * from Producao;
 
 CREATE TABLE `Fio` (
   `idFio` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -139,7 +150,8 @@ CREATE TABLE `Fio` (
 	FOREIGN KEY (`FK_fornecedor`) REFERENCES `Fornecedor` (`cnpj`)
     );
 
-
+INSERT INTO Fio VALUES (null,'98765432000188', 'Cru / Branco', 24.00, 'Fio Ne 30/1 Penteado', '30/1', '100% Algodão');
+select * from Fio;
 
 CREATE TABLE `entrada` (
   `ID` INT PRIMARY kEY AUTO_INCREMENT ,
@@ -149,7 +161,8 @@ CREATE TABLE `entrada` (
     FOREIGN KEY (`Fio_idFio`) REFERENCES `Fio` (`idFio`)
     );
 
-
+INSERT INTO entrada VALUES (null,1, 1);
+select * from entrada;
 
 CREATE TABLE `Maquina` (
   `idMaquina` SMALLINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -164,7 +177,8 @@ CREATE TABLE `Maquina` (
     FOREIGN KEY (`FK_Producao`) REFERENCES `Producao` (`idProducao`)
    );
 
-
+INSERT INTO Maquina VALUES (null,'Terrot S296', 'Circular Monofonte', 'Trabalhando', 22, 180000, '06:30:00', 92.5, 1);
+select * from Maquina;
 
 CREATE TABLE `Fio_no_Deposito` (
   `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -173,8 +187,9 @@ CREATE TABLE `Fio_no_Deposito` (
     FOREIGN KEY (`Fio_idFio`) REFERENCES `Fio` (`idFio`),
     FOREIGN KEY (`Deposito_idDeposito`) REFERENCES `Deposito` (`idDeposito`)
     );
-
-
+    
+INSERT INTO Fio_no_Deposito VALUES (null,1, 1);
+select * from Fio_no_Deposito;
 
 CREATE TABLE `Malha_no_Deposito` (
   `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -183,7 +198,9 @@ CREATE TABLE `Malha_no_Deposito` (
     FOREIGN KEY (`Malha_idMalha`) REFERENCES `Malha` (`idMalha`),
     FOREIGN KEY (`Deposito_idDeposito`) REFERENCES `Deposito` (`idDeposito`)
    );
-
+   
+INSERT INTO Malha_no_Deposito VALUES (null,1, 1);
+select * from Malha_no_Deposito;
 
 CREATE TABLE `Operador` (
   `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -193,6 +210,14 @@ CREATE TABLE `Operador` (
     FOREIGN KEY (`Funcionario_numeroCadastro`) REFERENCES `Funcionario` (`numeroCadastro`)
     );
 
--- alter table Operador modify  `Funcionario_numeroCadastro` int not null;
+INSERT INTO Operador VALUES (null,1, 1);
+select * from Operador;
 
-
+SELECT 
+    f.nome AS Nome_Tecelão,
+    m.modelo AS Máquina_Utilizada,
+    p.qntProduzida AS Quilos_Produzidos
+FROM Operador o
+INNER JOIN Funcionario f ON o.Funcionario_numeroCadastro = f.numeroCadastro
+INNER JOIN Producao p ON o.Producao_idProducao = p.idProducao
+INNER JOIN Maquina m ON m.FK_Producao = p.idProducao;

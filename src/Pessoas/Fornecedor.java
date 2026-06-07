@@ -8,11 +8,11 @@ import EnderecoContatos.*;
 public class Fornecedor extends PessoaJuridica {
 	
 	private String categoriaProduto;
-	private short prazoEntrega;
+	private short prazoEntregaMedio;
 	
 	public Fornecedor() {
 		this.categoriaProduto = null;
-		this.prazoEntrega = 0;
+		this.prazoEntregaMedio = 0;
 	}
 	
 	public Fornecedor(String nome, Endereco endereco, String telefone, String email, String cnpj,
@@ -34,11 +34,11 @@ public class Fornecedor extends PessoaJuridica {
 	}
 	
 	public short getPrazoEntrega() {
-		return prazoEntrega;
+		return prazoEntregaMedio;
 	}
 	
 	public void setPrazoEntrega(short prazoEntrega) {
-		this.prazoEntrega = prazoEntrega;
+		this.prazoEntregaMedio = prazoEntrega;
 	}
 	
 	
