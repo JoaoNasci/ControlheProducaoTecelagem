@@ -12,9 +12,9 @@ public class Fio extends MateriaPrima {
 		
 	}
 	
-	public Fio(int id, Fornecedor fornecedor, String cor, double peso, String descricao, String titulo,
+	public Fio(String lote, Fornecedor fornecedor, String cor, double peso, String descricao, String titulo,
 			String composicao) {
-		super(id, fornecedor, cor, peso, descricao);
+		super(lote, fornecedor, cor, peso, descricao);
 		this.setTitulo(titulo);
 		this.setComposicao(composicao);
 		

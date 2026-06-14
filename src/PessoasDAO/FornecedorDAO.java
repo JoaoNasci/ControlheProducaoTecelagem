@@ -91,7 +91,7 @@ public class FornecedorDAO implements DAO<Fornecedor> {
 		
 		} catch (SQLException e) {
 			System.out.println("Erro ao inserir o fornecedor: " + e.getMessage());
-		}
+		} 
 		 finally {
 			 try {
 				 if(statement != null) statement.close();
@@ -223,7 +223,7 @@ public class FornecedorDAO implements DAO<Fornecedor> {
 					fornecedor.setCategoriaProduto(resultSet.getString("categoriaProduto"));
 					fornecedor.setPrazoEntrega(resultSet.getShort("prazoEntregaMedio"));
 					
-					return fornecedor;
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Fornecedor não encontrado.");
 					 System.out.println("Fornecedor não encontrado.");  

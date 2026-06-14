@@ -3,14 +3,14 @@ package EstoqueMateriaPrima;
 import Pessoas.Fornecedor;
 
 public abstract class MateriaPrima {
-	private int id;
+	private String lote;
 	private Fornecedor fornecedor;
 	private String cor;
 	private double peso;
 	private String descricao;
 	
 	public MateriaPrima() {
-		id = 0;
+		lote = null;
 		fornecedor = null;
 		cor = null;
 		peso = 0;
@@ -18,8 +18,8 @@ public abstract class MateriaPrima {
 		
 	}
 	
-	public MateriaPrima(int id, Fornecedor fornecedor, String cor, double peso, String descricao) {
-		this.setId(id);
+	public MateriaPrima(String lote, Fornecedor fornecedor, String cor, double peso, String descricao) {
+		this.setLote(lote);
 		this.setFornecedor(fornecedor);
 		this.setCor(cor);
 		this.setPeso(peso);
@@ -27,14 +27,15 @@ public abstract class MateriaPrima {
 		
 	}
 	
-	public int getId() {
-		return id;
+
+	public String getLote() {
+		return lote;
 	}
-	
-	public void setId(int id) {
-		this.id = id;
+
+	public void setLote(String lote) {
+		this.lote = lote;
 	}
-	
+
 	public Fornecedor getFornecedor() {
 		return fornecedor;
 	}
@@ -69,9 +70,8 @@ public abstract class MateriaPrima {
 	
 	@Override
 	public String toString() {
-		String str;
-		str = "ID: " + id + "\n";
-		str += "Fornecedor: " + fornecedor.getNomeFantasia() + "\n";
+		String str = "Lote: " + lote + "\n";
+		str = "Fornecedor: " + fornecedor.getNomeFantasia() + "\n";
 		str += "Cor: " + cor + "\n";
 		str += "Peso: " + peso + "\n";
 		str += "Descrição: " + descricao + "\n";

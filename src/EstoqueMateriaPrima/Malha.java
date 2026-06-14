@@ -15,9 +15,9 @@ public class Malha extends MateriaPrima {
 		
 	}
 	
-	public Malha(int id, Fornecedor fornecedor, String cor, double peso, String descricao, double largura,
+	public Malha(String lote, Fornecedor fornecedor, String cor, double peso, String descricao, double largura,
 			int gramatura, String tipoTrama) {
-		super(id, fornecedor, cor, peso, descricao);
+		super(lote, fornecedor, cor, peso, descricao);
 		this.setLargura(largura);
 		this.setGramatura(gramatura);
 		this.setTipoTrama(tipoTrama);

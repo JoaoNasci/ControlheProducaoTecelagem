@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import ConexaoBD_DAO.BD;
 import ConexaoBD_DAO.DAO;
 import EnderecoContatos.Endereco;
-import Pessoas.Cliente;
 import Pessoas.Funcionario;
 
 public class FuncionarioDao implements DAO<Funcionario>{

@@ -26,7 +26,7 @@ public class Login {
 	}
 	
 	public boolean validarLogin(String email, String senha) {
-		// Lógica de validação do login (exemplo simples)
+		
 		if (email.equals("") || senha.equals("")) {
 			return false; 
 		}else {

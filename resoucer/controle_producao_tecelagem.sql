@@ -1,7 +1,22 @@
 
 CREATE database `controle_producao_tecelagem`;
 USE `controle_producao_tecelagem` ;
+
 -- drop database  `controle_producao_tecelagem` ;
+
+
+
+
+CREATE TABLE `Login`(
+`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+`email` VARCHAR(128) NOT NULL UNIQUE,
+`senha` VARCHAR(45) NOT NULL
+);
+
+INSERT into `Login` (email,senha) values ( "test@hotmail", "test123456");
+INSERT into `Login` (email,senha) values ( "test2@hotmail", "test123456");
+
+select * from Login;
 
 CREATE TABLE `Endereco` (
   `idEndereco` INT primary key not null auto_increment unique,
@@ -84,15 +99,14 @@ select * from Fornecedor;
 
 CREATE TABLE `Deposito` (
   `idDeposito` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(45) UNIQUE NOT NULL ,
   `FK_endereco` INT NOT NULL,
-  `estante` VARCHAR(5) NOT NULL,
   `capacidadeMaxima` DOUBLE NOT NULL,
   `capacidadeAtual` DOUBLE NOT NULL,
     FOREIGN KEY (`FK_endereco`) REFERENCES `Endereco` (`idEndereco`)
     );
 
-INSERT INTO Deposito VALUES (null,'Depósito Central de Fios', 1, 'A1', 10000.00, 0.00);
+INSERT INTO Deposito VALUES (null,'Depósito Central de Fios', 1, 1000000.00, 0.00);
 select * from Deposito;
 
 CREATE TABLE `Pedido` (
@@ -112,6 +126,7 @@ select * from Pedido;
 
 CREATE TABLE `Malha` (
   `idMalha` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `loteMalha` varchar(45) not null,
   `FK_fornecedor` VARCHAR(20) NOT NULL,
   `cor` VARCHAR(45) NOT NULL,
   `peso` DOUBLE NOT NULL,
@@ -122,8 +137,14 @@ CREATE TABLE `Malha` (
     FOREIGN KEY (`FK_fornecedor`) REFERENCES `Fornecedor` (`cnpj`)
    );
 
-INSERT INTO Malha VALUES (null,'98765432000188', 'Azul Marinho', 250.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
-select * from Malha;
+INSERT INTO Malha VALUES (null,'89TY','98765432000188', 'Azul Marinho', 25.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+INSERT INTO Malha VALUES (null,'89TY','98765432000188', 'Azul Marinho', 25.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+INSERT INTO Malha VALUES (null,'88TY','98765432000188', 'Azul Marinho', 10.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+INSERT INTO Malha VALUES (null,'88TY','98765432000188', 'Azul Marinho', 13.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+INSERT INTO Malha VALUES (null,'89TY','98765432000188', 'Azul Marinho', 25.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+INSERT INTO Malha VALUES (null,'89TY','98765432000188', 'Azul Marinho', 25.00, 'Malha Piquet Premium', 1.80, 220, 'Tubular');
+
+select * from Malha where loteMalha = '89TY' ;
 
 CREATE TABLE `Producao` (
   `idProducao` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -141,6 +162,7 @@ select * from Producao;
 
 CREATE TABLE `Fio` (
   `idFio` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `loteFio` varchar(45) not null unique,
   `FK_fornecedor` VARCHAR(20) NOT NULL,
   `cor` VARCHAR(45) NOT NULL,
   `peso` DOUBLE NOT NULL,
@@ -150,7 +172,10 @@ CREATE TABLE `Fio` (
 	FOREIGN KEY (`FK_fornecedor`) REFERENCES `Fornecedor` (`cnpj`)
     );
 
-INSERT INTO Fio VALUES (null,'98765432000188', 'Cru / Branco', 24.00, 'Fio Ne 30/1 Penteado', '30/1', '100% Algodão');
+INSERT INTO Fio VALUES (null,'144NJK','98765432000188', 'Cru / Branco', 24000.00, 'Fio Ne 30/1 Penteado', '30/1', '100% Algodão');
+INSERT INTO Fio VALUES (null,'144LKJ','98765432000188', 'Cru / Branco', 20000.00, 'Fio Ne 30/1 Penteado', '30/1', '100% Algodão');
+INSERT INTO Fio VALUES (null,'144KNC','98765432000188', 'Cru / Branco', 2400.00, 'Fio Ne 30/1 Penteado', '30/1', '100% Algodão');
+
 select * from Fio;
 
 CREATE TABLE `entrada` (
@@ -162,6 +187,9 @@ CREATE TABLE `entrada` (
     );
 
 INSERT INTO entrada VALUES (null,1, 1);
+INSERT INTO entrada VALUES (null,1, 2);
+INSERT INTO entrada VALUES (null,1, 3);
+
 select * from entrada;
 
 CREATE TABLE `Maquina` (
@@ -184,22 +212,29 @@ CREATE TABLE `Fio_no_Deposito` (
   `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Fio_idFio` INT NOT NULL,
   `Deposito_idDeposito` INT NOT NULL,
+  `estante_Fio` VARCHAR(5) NOT NULL,
     FOREIGN KEY (`Fio_idFio`) REFERENCES `Fio` (`idFio`),
     FOREIGN KEY (`Deposito_idDeposito`) REFERENCES `Deposito` (`idDeposito`)
     );
     
-INSERT INTO Fio_no_Deposito VALUES (null,1, 1);
+INSERT INTO Fio_no_Deposito VALUES (null,1, 1,'A02');
+INSERT INTO Fio_no_Deposito VALUES (null,3, 1,'A02');
+
 select * from Fio_no_Deposito;
 
 CREATE TABLE `Malha_no_Deposito` (
   `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Malha_idMalha` INT NOT NULL,
   `Deposito_idDeposito` INT NOT NULL,
+  `estante_Malha` VARCHAR(5) NOT NULL,
     FOREIGN KEY (`Malha_idMalha`) REFERENCES `Malha` (`idMalha`),
     FOREIGN KEY (`Deposito_idDeposito`) REFERENCES `Deposito` (`idDeposito`)
    );
    
-INSERT INTO Malha_no_Deposito VALUES (null,1, 1);
+INSERT INTO Malha_no_Deposito VALUES (null,1, 1,'A01');
+INSERT INTO Malha_no_Deposito VALUES (null,4, 1,'A02');
+INSERT INTO Malha_no_Deposito VALUES (null,6, 1,'A03');
+
 select * from Malha_no_Deposito;
 
 CREATE TABLE `Operador` (
@@ -210,14 +245,18 @@ CREATE TABLE `Operador` (
     FOREIGN KEY (`Funcionario_numeroCadastro`) REFERENCES `Funcionario` (`numeroCadastro`)
     );
 
-INSERT INTO Operador VALUES (null,1, 1);
-select * from Operador;
 
-SELECT 
-    f.nome AS Nome_Tecelão,
-    m.modelo AS Máquina_Utilizada,
-    p.qntProduzida AS Quilos_Produzidos
-FROM Operador o
-INNER JOIN Funcionario f ON o.Funcionario_numeroCadastro = f.numeroCadastro
-INNER JOIN Producao p ON o.Producao_idProducao = p.idProducao
-INNER JOIN Maquina m ON m.FK_Producao = p.idProducao;
+
+ 
+ 
+ SELECT d.nome, d.capacidadeMaxima, e.cep, e.rua, e.numero, e.bairro, e.cidade, e.estado, e.pais,
+ e.complemento, f.estante_Fio, fi.loteFio AS lote, fi.FK_fornecedor, fi.cor, fi.peso, fi.descricao, fi.titulo AS campo1,
+ fi.composicao AS campo2, NULL AS campo3, 'Fio' AS tipoItem FROM Fio_no_Deposito f 
+ INNER JOIN Deposito d ON f.Deposito_idDeposito = d.idDeposito INNER JOIN Fio fi ON f.Fio_idFio = fi.idFio 
+ INNER JOIN Endereco e ON d.FK_endereco = e.idEndereco 
+ UNION ALL 
+ SELECT d.nome, d.capacidadeMaxima, e.cep, e.rua, e.numero, e.bairro, e.cidade, e.estado, e.pais, e.complemento,
+ m.estante_Malha, ma.loteMalha AS lote, ma.FK_fornecedor, ma.cor, ma.peso, ma.descricao, ma.largura AS campo1, 
+ ma.gramatura AS campo2, ma.tipoTrama AS campo3, 'Malha' AS tipoItem FROM Malha_no_Deposito m
+ INNER JOIN Deposito d ON m.Deposito_idDeposito = d.idDeposito INNER JOIN Malha ma ON m.Malha_idMalha = ma.idMalha 
+ INNER JOIN Endereco e ON d.FK_endereco = e.idEndereco;
