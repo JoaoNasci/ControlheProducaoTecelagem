@@ -1,6 +1,4 @@
 package EstoqueMateriaPrimaDAO;
-
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,64 +6,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+
 import ConexaoBD_DAO.*;
 import EnderecoContatos.Endereco;
-import EstoqueMateriaPrima.Fio;
+import EstoqueMateriaPrima.Malha;
 import Pessoas.Fornecedor;
 
-public class FioDao implements DAO<Fio> {
+public class MalhaDao implements DAO<Malha>{
 	public BD bd ;
 	private PreparedStatement statement;
 	private ResultSet resultSet;
 	private String  sql ;
 	
-	public FioDao() {
+	public MalhaDao() {
 		bd = new BD();
 	}
-
+	
 	@Override
-	public void Inclusao(Fio incluir) {
-		sql = "INSERT INTO Fio(loteFio,Fk_fornecedor, cor, peso, descricao, titulo, composicao)"
-			 +" VALUES(?,?,?,?,?,?,?) ";
-		try {
-			if(!bd.getConectar()) {
-				System.out.println("Falha ao conectar ao banco de dados.");
-
-			}else {
-				
-				statement = bd.conexao.prepareStatement(sql);
-				
-				statement.setString(1, incluir.getLote());
-				statement.setString(2, incluir.getFornecedor().getCnpj());
-				statement.setString(3, incluir.getCor());
-				statement.setDouble(4, incluir.getPeso());
-				statement.setString(5, incluir.getDescricao());
-				statement.setString(6, incluir.getTitulo());
-				statement.setString(7, incluir.getComposicao());
-				
-				statement.executeUpdate();
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("Erro ao inserir o fio: " + e.getMessage());
-		} catch (Exception e) {
-			System.out.println("Erro não previsto: "+ e.getMessage());
-		}finally {
+	public void Inclusao(Malha incluir) {
+		sql = "INSERT INTO Malha (loteMalha, FK_fornecedor, cor, peso, descricao,"
+				+ " largura, gramatura, tipoTrama)"
+				 +" VALUES(?,?,?,?,?,?,?,?) ";
+		
 			try {
-				if(statement != null) statement.close();
-				 bd.fecharConexao();
-			 } catch (SQLException e) {
-				 System.out.println("Erro ao fechar a conexão: " + e.getMessage());
-			 }
-		};
+				if(!bd.getConectar()) {
+					System.out.println("Falha ao conectar ao banco de dados.");
+
+				}else {
+					
+					statement = bd.conexao.prepareStatement(sql);
+					
+					statement.setString(1, incluir.getLote());
+					statement.setString(2, incluir.getFornecedor().getCnpj());
+					statement.setString(3, incluir.getCor());
+					statement.setDouble(4, incluir.getPeso());
+					statement.setString(5, incluir.getDescricao());
+					statement.setDouble(6, incluir.getLargura());
+					statement.setInt(7, incluir.getGramatura());
+					statement.setString(8, incluir.getTipoTrama());
+					
+					statement.executeUpdate();
+				}
+				
+			} catch (SQLException e) {
+				System.out.println("Erro ao inserir o malha: " + e.getMessage());
+			} catch (Exception e) {
+				System.out.println("Erro não previsto: "+ e.getMessage());
+			}finally {
+				try {
+					if(statement != null) statement.close();
+					 bd.fecharConexao();
+				 } catch (SQLException e) {
+					 System.out.println("Erro ao fechar a conexão: " + e.getMessage());
+				 }
+			};
+			
 		
 	}
-
+	
+	
 	@Override
-	public void Alter(Fio alterar) {
+	public void Alter(Malha alterar) {
 		sql =  "UPDATE FIO fio "
-				+ "SET cor = ?, peso = ?, descricao = ?, titulo = ?, composicao = ? "
-				+ "WHERE loteFio = ? and FK_fornecedor = ? ";
+				+ "SET cor = ?, peso = ?, descricao = ?, largura = ?, gramatura = ?, tipoTrama =? "
+				+ "WHERE loteMalha = ? and FK_fornecedor = ? ";
 		
 		try {
 			if (!bd.getConectar()) {
@@ -75,22 +79,23 @@ public class FioDao implements DAO<Fio> {
 				statement.setString(1, alterar.getCor());
 				statement.setDouble(2, alterar.getPeso());
 				statement.setString(3, alterar.getDescricao());
-				statement.setString(4, alterar.getTitulo());
-				statement.setString(5, alterar.getComposicao());
-				statement.setString(6, alterar.getLote());
-				statement.setString(7, alterar.getFornecedor().getCnpj());
+				statement.setDouble(4, alterar.getLargura());
+				statement.setInt(5, alterar.getGramatura());
+				statement.setString(6, alterar.getTipoTrama());
+				statement.setString(7, alterar.getLote());
+				statement.setString(8, alterar.getFornecedor().getCnpj());
 				
 				int rowsAffected = statement.executeUpdate();
 				
 				if (rowsAffected > 0) {
-					System.out.println("Fio atualizado com sucesso.");
+					System.out.println("Malha atualizado com sucesso.");
 				} else {
-					System.out.println("Fio não encontrado para atualização.");
+					System.out.println("Malha não encontrado para atualização.");
 				}
 			}
 		}
 		catch (SQLException e) {
-			System.out.println("Erro ao atualizar o fio: " + e.getMessage());
+			System.out.println("Erro ao atualizar o malha: " + e.getMessage());
 		}
 		 finally {
 			 try {
@@ -100,12 +105,12 @@ public class FioDao implements DAO<Fio> {
 				 System.out.println("Erro ao fechar a conexão: " + e.getMessage());
 			 }
 		 }
-		
 	}
-
+	
+	
 	@Override
-	public Fio Consulta(String consulta) {
-		Fio fio = null;
+	public Malha Consulta(String consulta) {
+		Malha malha = null;
 		sql = "SELECT "
 				+ "e.cep, "
 				+ "e.rua, "
@@ -126,16 +131,17 @@ public class FioDao implements DAO<Fio> {
 				+ "f.Status, "
 				+ "f.categoriaProduto, "
 				+ "f.prazoEntregaMedio, "
-				+ "fi.loteFio, "
-				+ "fi.cor, "
-				+ "fi.peso, "
-				+ "fi.descricao, "
-				+ "fi.titulo, "
-				+ "fi.composicao "
-				+ "FROM Fio fi "
-				+ "INNER JOIN Fornecedor f ON fi.FK_fornecedor = f.cnpj "
+				+ "ma.loteMalha, "
+				+ "ma.cor, "
+				+ "ma.peso, "
+				+ "ma.descricao, "
+				+ "ma.largura, "
+				+ "ma.gramatura, "
+				+ "ma.tipoTrama "
+				+ "FROM Malha ma "
+				+ "INNER JOIN Fornecedor f ON ma.FK_fornecedor = f.cnpj "
 				+ "INNER JOIN Endereco e ON f.FK_endereco = e.idEndereco "
-				+ "WHERE fi.loteFio = ?";
+				+ "WHERE ma.loteMalha = ?";
 		
 		try {
 			
@@ -149,7 +155,7 @@ public class FioDao implements DAO<Fio> {
 				resultSet = statement.executeQuery();
 				
 				if(resultSet.next()) {
-					fio = new Fio();
+					malha = new Malha();
 					Endereco endereco = new Endereco();
 					Fornecedor fornecedor = new Fornecedor();
 					
@@ -174,23 +180,24 @@ public class FioDao implements DAO<Fio> {
 					fornecedor.setStatus(resultSet.getString("Status"));
 					fornecedor.setCategoriaProduto(resultSet.getString("categoriaProduto"));
 					fornecedor.setPrazoEntrega(resultSet.getShort("prazoEntregaMedio"));
-					fio.setLote(resultSet.getString("loteFio"));
-					fio.setFornecedor(fornecedor);
-					fio.setCor(resultSet.getString("cor"));
-					fio.setPeso(resultSet.getDouble("peso"));
-					fio.setDescricao(resultSet.getString("descricao"));
-					fio.setTitulo(resultSet.getString("titulo"));
-					fio.setComposicao(resultSet.getString("composicao"));
+					malha.setLote(resultSet.getString("loteFio"));
+					malha.setFornecedor(fornecedor);
+					malha.setCor(resultSet.getString("cor"));
+					malha.setPeso(resultSet.getDouble("peso"));
+					malha.setDescricao(resultSet.getString("descricao"));
+					malha.setLargura(resultSet.getDouble("largura"));
+					malha.setGramatura(resultSet.getInt("gramatura"));
+					malha.setTipoTrama(resultSet.getString("tipoTrama"));
 					
 				} else {
-					JOptionPane.showMessageDialog(null, "Fio não encontrado.");
-					 System.out.println("Fio não encontrado.");  
+					JOptionPane.showMessageDialog(null, "Malha não encontrado.");
+					 System.out.println("Malha não encontrado.");  
 					
 				}
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar o fio: " + e.getMessage());
+			System.out.println("Erro ao consultar o malha: " + e.getMessage());
 			
 		}finally {
 			 try {
@@ -201,12 +208,13 @@ public class FioDao implements DAO<Fio> {
 				 System.out.println("Erro ao fechar a conexão: " + e.getMessage());
 			 }
 		 }
-		return fio;
+		return malha;
 	}
-
+	
+	
 	@Override
-	public List<Fio> ConsultaList() {
-		List<Fio> listaFio = new ArrayList<Fio>();
+	public List<Malha> ConsultaList() {
+		List<Malha> listaMalha = new ArrayList<Malha>();
 		sql = "SELECT "
 				+ "e.cep, "
 				+ "e.rua, "
@@ -227,14 +235,15 @@ public class FioDao implements DAO<Fio> {
 				+ "f.Status, "
 				+ "f.categoriaProduto, "
 				+ "f.prazoEntregaMedio, "
-				+ "fi.loteFio, "
-				+ "fi.cor, "
-				+ "fi.peso, "
-				+ "fi.descricao, "
-				+ "fi.titulo, "
-				+ "fi.composicao "
-				+ "FROM Fio fi "
-				+ "INNER JOIN Fornecedor f ON fi.FK_fornecedor = f.cnpj "
+				+ "ma.loteMalha, "
+				+ "ma.cor, "
+				+ "ma.peso, "
+				+ "ma.descricao, "
+				+ "ma.largura, "
+				+ "ma.gramatura, "
+				+ "ma.tipoTrama "
+				+ "FROM Malha ma "
+				+ "INNER JOIN Fornecedor f ON ma.FK_fornecedor = f.cnpj "
 				+ "INNER JOIN Endereco e ON f.FK_endereco = e.idEndereco ";
 		
 		try {
@@ -248,7 +257,7 @@ public class FioDao implements DAO<Fio> {
 				resultSet = statement.executeQuery();
 				
 				while(resultSet.next()) {
-					Fio fio = new Fio();
+					Malha malha = new Malha();
 					Endereco endereco = new Endereco();
 					Fornecedor fornecedor = new Fornecedor();
 					
@@ -273,19 +282,20 @@ public class FioDao implements DAO<Fio> {
 					fornecedor.setStatus(resultSet.getString("Status"));
 					fornecedor.setCategoriaProduto(resultSet.getString("categoriaProduto"));
 					fornecedor.setPrazoEntrega(resultSet.getShort("prazoEntregaMedio"));
-					fio.setLote(resultSet.getString("loteFio"));
-					fio.setFornecedor(fornecedor);
-					fio.setCor(resultSet.getString("cor"));
-					fio.setPeso(resultSet.getDouble("peso"));
-					fio.setDescricao(resultSet.getString("descricao"));
-					fio.setTitulo(resultSet.getString("titulo"));
-					fio.setComposicao(resultSet.getString("composicao"));
+					malha.setLote(resultSet.getString("loteFio"));
+					malha.setFornecedor(fornecedor);
+					malha.setCor(resultSet.getString("cor"));
+					malha.setPeso(resultSet.getDouble("peso"));
+					malha.setDescricao(resultSet.getString("descricao"));
+					malha.setLargura(resultSet.getDouble("largura"));
+					malha.setGramatura(resultSet.getInt("gramatura"));
+					malha.setTipoTrama(resultSet.getString("tipoTrama"));
 					
-					listaFio.add(fio);
+					listaMalha.add(malha);
 				} 
-				if(listaFio.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Fio não encontrado.");
-					 System.out.println("Fio não encontrado.");  
+				if(listaMalha.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Malha não encontrado.");
+					 System.out.println("Malha não encontrado.");  
 					
 				}
 			}
@@ -302,12 +312,13 @@ public class FioDao implements DAO<Fio> {
 				 System.out.println("Erro ao fechar a conexão: " + e.getMessage());
 			 }
 		 }
-		return listaFio;
+		return listaMalha;
 	}
-
+	
+	
 	@Override
 	public void Excluir(String excluir) {
-		sql = "DELETE FROM Foi WHERE loteFio = ?";
+		sql = "DELETE FROM Malha WHERE loteMalha = ?";
 		try {
 			if (!bd.getConectar()) {
 				System.out.println("Falha ao conectar ao banco de dados.");  
@@ -317,14 +328,14 @@ public class FioDao implements DAO<Fio> {
 				int rowsAffected = statement.executeUpdate();
 				
 				if (rowsAffected > 0) {
-					System.out.println("Fio excluído com sucesso.");
+					System.out.println("Malha excluído com sucesso.");
 				} else {
-					System.out.println("Fio não encontrado para exclusão.");
+					System.out.println("Malha não encontrado para exclusão.");
 				}
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("Erro ao excluir o fio: " + e.getMessage());
+			System.out.println("Erro ao excluir o malha: " + e.getMessage());
 		}finally {
 			 try {
 				 if(statement != null) statement.close();
@@ -334,6 +345,9 @@ public class FioDao implements DAO<Fio> {
 			 }
 		 }
 		
+		
 	}
+	
+	
 
 }
