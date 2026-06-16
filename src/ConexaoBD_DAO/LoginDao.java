@@ -65,8 +65,6 @@ public class LoginDao implements DAO<Login> {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
-			
-		}
 			try {
 				if (statement != null) statement.close();
 				bd.fecharConexao();
@@ -74,11 +72,14 @@ public class LoginDao implements DAO<Login> {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		
+
+		}
+					
 	}
 
 	@Override
 	public Login Consulta(String consulta) {
+		Login login = null;
 		sql = "SELECT * FROM Login WHERE email = ?";
 		
 			try {
@@ -89,7 +90,7 @@ public class LoginDao implements DAO<Login> {
 					resultSet = statement.executeQuery();
 					
 					if (resultSet.next()) {
-						Login login = new Login();
+						login = new Login();
 						login.setEmail(resultSet.getString("email"));
 						login.setSenha(resultSet.getString("senha"));
 						return login;
@@ -113,7 +114,7 @@ public class LoginDao implements DAO<Login> {
 				}
 			}
 		
-		return null;
+		return login;
 	}
 
 	@Override

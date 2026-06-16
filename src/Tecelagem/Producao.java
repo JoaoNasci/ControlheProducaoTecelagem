@@ -1,5 +1,6 @@
 package Tecelagem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Enumeradores.Qualidade;
@@ -7,46 +8,38 @@ import EstoqueMateriaPrima.*;
 import Pessoas.Funcionario;
 
 public class Producao {
-	private int id;
 	private Pedido pedido;
-	private List<Funcionario> operador = new java.util.ArrayList<>();
-	private List<Maquina> maquina = new java.util.ArrayList<>();
+	private List<Funcionario> operador = new ArrayList<>();
+	private List<Maquina> maquina = new ArrayList<>();
 	private double quantidadePlanejada;
-	private List<Fio> entrada = new java.util.ArrayList<>();
-	private Malha saida;
+	private List<Fio> entradaMateriaPrima = new ArrayList<>();
+	private Malha saidaMateriaPrima;
 	private double qntProduzida;
 	private Qualidade qualidade;
 	
 	public Producao() {
-		id = 0;
+	
 		pedido = null;
 		quantidadePlanejada = 0;
-		saida = null;
+		saidaMateriaPrima = null;
 		qntProduzida = 0;
 		qualidade = null;
 		
 	}
 	
-	public Producao(int id, Pedido pedido,Funcionario funcionario, Maquina equipamento,
-			double quantidadePlanejada, Fio fio, double qntProduzida, int qualidade) {
-		this.setId(id);
+	public Producao(Pedido pedido,Funcionario funcionario, Maquina equipamento,
+			double quantidadePlanejada, Fio fio, double qntProduzida, byte qualidade) {
+		
 		this.setPedido(pedido);
 		this.setOperador(funcionario);
 		this.setMaquina(equipamento);
 		this.setQuantidadePlanejada(quantidadePlanejada);
-		this.setEntrada(fio);
+		this.setEntradaMateriaPrima(fio);
 		this.setQntProduzida(qntProduzida);
 		this.setQualidade(qualidade);
 		
 	}
 	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	public Pedido getPedido() {
 		return pedido;
@@ -80,20 +73,21 @@ public class Producao {
 		this.quantidadePlanejada = quantidadePlanejada;
 	}
 	
-	public List<Fio> getEntrada() {
-		return entrada.toString().isEmpty() ? null : entrada;
+	public List<Fio> getEntradaMateriaPrima() {
+		
+		return entradaMateriaPrima != null ? entradaMateriaPrima : new ArrayList<>();
 	}
 	
-	public void setEntrada(Fio fio) {
-		this.entrada.add(fio);
+	public void setEntradaMateriaPrima(Fio fio) {
+		this.entradaMateriaPrima.add(fio);
 	}
 	
-	public Malha getSaida() {
-		return saida;
+	public Malha getSaidaMateriaPrima() {
+		return saidaMateriaPrima;
 	}
 	
-	public void setSaida(Malha saida) {
-		this.saida = saida;
+	public void setSaidaMateriaPrima(Malha saida) {
+		this.saidaMateriaPrima = saida;
 	}
 	
 	public double getQntProduzida() {
@@ -108,7 +102,7 @@ public class Producao {
 		return qualidade.name();
 	}
 	
-	public void setQualidade(int qualidade) {
+	public void setQualidade(short qualidade) {
 		if (qualidade == 1) {
 			this.qualidade = Qualidade.º1_QUALIDADE;
 		} else if (qualidade == 2) {
@@ -120,13 +114,12 @@ public class Producao {
 	
 	@Override
 	public String toString() {
-		String str = "ID: " + this.getId() + "\n";
-		str += "Pedido: " + this.getPedido() + "\n";
+		String str = "Pedido: " + this.getPedido() + "\n";
 		str += "Operador: " + this.getOperador() + "\n";
 		str += "Maquina: " + this.getMaquina() + "\n";
 		str += "Quantidade Planejada: " + this.getQuantidadePlanejada() + "\n";
-		str += "Entrada: " + this.getEntrada() + "\n";
-		str += "Saida: " + this.getSaida() + "\n";
+		str += "Entrada: " + this.getEntradaMateriaPrima() + "\n";
+		str += "Saida: " + this.getSaidaMateriaPrima() + "\n";
 		str += "Quantidade Produzida: " + this.getQntProduzida() + "\n";
 		str += "Qualidade: " + this.getQualidade() + "\n";
 		

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import Enumeradores.Situacao;
 
 public class Maquina {
-	private short id;
+	private short idMaquina;
 	private String modelo;
 	private String tipo;
 	private Situacao situacao;
@@ -13,10 +13,11 @@ public class Maquina {
 	private int  quantidadeVoltas;
 	private LocalDateTime  tempoExecucao;
 	private double eficiencia = 100.0;
-	
-	
+	private int fk_Producao;
+
+
 	public Maquina() {
-		id = 0;
+		idMaquina = 0;
 		modelo = null;
 		tipo = null;
 		situacao = null;
@@ -27,7 +28,7 @@ public class Maquina {
 	}
 	
 	public Maquina(short id, String modelo, String tipo, String situacao, byte velocidade, int quantidadeVoltas) {
-		setId(id);
+		setIdMaquina(id);
 		setModelo(modelo);
 		setTipo(tipo);
 		setSituacao(situacao);
@@ -38,12 +39,12 @@ public class Maquina {
 		
 	}
 	
-	public short getId() {
-		return id;
+	public short getIdMaquina() {
+		return idMaquina;
 	}
 	
-	public void setId(short id) {
-		this.id = id;
+	public void setIdMaquina(short id) {
+		this.idMaquina = id;
 	}
 	
 	public String getModelo() {
@@ -101,6 +102,10 @@ public class Maquina {
 		return eficiencia;
 	}
 	
+	public void setEficiencia(double e) {
+		this.eficiencia = e;
+	}
+	
 	public void setEficiencia() {
 		while ( Situacao.valueOf(this.getSituacao().toUpperCase().trim()) == Situacao.TROCA_DE_ARTIGO ||
 				Situacao.valueOf(this.getSituacao().toUpperCase().trim()) == Situacao.FALTA_MATÉRIA_PRIMA ||
@@ -131,11 +136,20 @@ public class Maquina {
 			}
 		}
 	
+	
+	public int getFK_Producao() {
+		return this.fk_Producao;
+	}
+
+	public void setFK_Producao(int fK_Producao) {
+		this.fk_Producao = fK_Producao;
+	}
+	
 
 @Override
 	public String toString() {
 		String str;
-		str = "ID: " + this.getId() + "\n" +
+		str = "ID da Maquina: " + this.getIdMaquina() + "\n" +
 			  "Modelo: " + this.getModelo() + "\n" +
 			  "Tipo: " + this.getTipo() + "\n" +
 			  "Situação: " + this.getSituacao() + "\n" +

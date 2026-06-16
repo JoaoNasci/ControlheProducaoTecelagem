@@ -63,7 +63,7 @@ public class FioDao implements DAO<Fio> {
 
 	@Override
 	public void Alter(Fio alterar) {
-		sql =  "UPDATE FIO fio "
+		sql =  "UPDATE FIO "
 				+ "SET cor = ?, peso = ?, descricao = ?, titulo = ?, composicao = ? "
 				+ "WHERE loteFio = ? and FK_fornecedor = ? ";
 		
@@ -135,7 +135,7 @@ public class FioDao implements DAO<Fio> {
 				+ "FROM Fio fi "
 				+ "INNER JOIN Fornecedor f ON fi.FK_fornecedor = f.cnpj "
 				+ "INNER JOIN Endereco e ON f.FK_endereco = e.idEndereco "
-				+ "WHERE fi.loteFio = ?";
+				+ "WHERE fi.loteFio = ? or fi.idFio = ? " ;
 		
 		try {
 			
@@ -146,6 +146,8 @@ public class FioDao implements DAO<Fio> {
 			}else {
 				statement = bd.conexao.prepareStatement(sql);
 				statement.setString(1, consulta);
+				statement.setString(2, consulta);
+				
 				resultSet = statement.executeQuery();
 				
 				if(resultSet.next()) {

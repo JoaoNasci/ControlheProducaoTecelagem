@@ -2,6 +2,7 @@ package EstoqueMateriaPrimaDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +17,21 @@ public class MalhaDao implements DAO<Malha>{
 	public BD bd ;
 	private PreparedStatement statement;
 	private ResultSet resultSet;
+	private int idMalha;
+	
+
+
 	private String  sql ;
 	
 	public MalhaDao() {
 		bd = new BD();
 	}
+	
+	
+	public int getIdMalha() {
+		return idMalha;
+	}
+
 	
 	@Override
 	public void Inclusao(Malha incluir) {
@@ -34,7 +45,7 @@ public class MalhaDao implements DAO<Malha>{
 
 				}else {
 					
-					statement = bd.conexao.prepareStatement(sql);
+					statement = bd.conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 					
 					statement.setString(1, incluir.getLote());
 					statement.setString(2, incluir.getFornecedor().getCnpj());
@@ -46,6 +57,9 @@ public class MalhaDao implements DAO<Malha>{
 					statement.setString(8, incluir.getTipoTrama());
 					
 					statement.executeUpdate();
+					
+					var id = statement.getGeneratedKeys();
+					this.idMalha = id.getInt(1);
 				}
 				
 			} catch (SQLException e) {
@@ -67,15 +81,15 @@ public class MalhaDao implements DAO<Malha>{
 	
 	@Override
 	public void Alter(Malha alterar) {
-		sql =  "UPDATE FIO fio "
-				+ "SET cor = ?, peso = ?, descricao = ?, largura = ?, gramatura = ?, tipoTrama =? "
+		sql =  "UPDATE Malha "
+				+ "SET cor = ?, peso = ?, descricao = ?, largura = ?, gramatura = ?, tipoTrama = ? "
 				+ "WHERE loteMalha = ? and FK_fornecedor = ? ";
 		
 		try {
 			if (!bd.getConectar()) {
 				System.out.println("Falha ao conectar ao banco de dados.");
 			}else {
-				statement = bd.conexao.prepareStatement(sql);
+				statement = bd.conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				statement.setString(1, alterar.getCor());
 				statement.setDouble(2, alterar.getPeso());
 				statement.setString(3, alterar.getDescricao());
@@ -84,6 +98,9 @@ public class MalhaDao implements DAO<Malha>{
 				statement.setString(6, alterar.getTipoTrama());
 				statement.setString(7, alterar.getLote());
 				statement.setString(8, alterar.getFornecedor().getCnpj());
+				
+				var id = statement.getGeneratedKeys();
+				this.idMalha = id.getInt(1);
 				
 				int rowsAffected = statement.executeUpdate();
 				

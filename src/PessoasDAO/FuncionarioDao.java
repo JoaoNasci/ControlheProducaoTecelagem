@@ -164,7 +164,7 @@ public class FuncionarioDao implements DAO<Funcionario>{
 	public Funcionario Consulta(String consulta) {
 		Funcionario funcionario = null;
 		sql = "SELECT "
-				+ "c.nome,"
+				+ "f.nome,"
 				+ "e.cep,"
 				+ "e.rua,"
 				+ "e.numero,"
@@ -178,12 +178,13 @@ public class FuncionarioDao implements DAO<Funcionario>{
 				+ "f.cpf,"
 				+ "f.dataNascimento,"
 				+ "f.sexo,"
+				+ "f.numeroCadastro"
 				+ "f.pis,"
 				+ "f.dataAdmissao,"
 				+ "f.cargo,"
 				+ "f.turno,"
 				+ " FROM Funcionario f INNER JOIN Endereco e ON f.FK_endereco = e.idEndereco "
-				+ "WHERE f.cpf = ?";
+				+ "WHERE f.cpf = ? OR F.nome = ? or f.numeroCadastro = ?";
 		
 		try {
 			
@@ -194,11 +195,14 @@ public class FuncionarioDao implements DAO<Funcionario>{
 			}else {
 				statement = bd.conexao.prepareStatement(sql);
 				statement.setString(1, consulta);
+				statement.setString(2, consulta);
+				statement.setString(3, consulta);
 				resultSet = statement.executeQuery();
 				
 				if(resultSet.next()) {
 					funcionario = new Funcionario();
 					Endereco endereco = new Endereco();
+					funcionario.setNumeroCadastro(resultSet.getInt("numeroCadastro"));
 					funcionario.setNome(resultSet.getString("nome"));
 					endereco.setCep(resultSet.getString("cep"));
 					endereco.setRua(resultSet.getString("rua"));

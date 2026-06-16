@@ -27,10 +27,10 @@ public class Login {
 	
 	public boolean validarLogin(String email, String senha) {
 		
-		if (email.equals("") || senha.equals("")) {
-			return false; 
-		}else {
+		if (this.email.equals(email) && this.senha.equals(senha)) {
 			return true; 
+		}else {
+			return false; 
 		}
 			
 		

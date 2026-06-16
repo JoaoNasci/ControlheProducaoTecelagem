@@ -36,7 +36,7 @@ select * from Endereco;
 
 
 CREATE TABLE `Funcionario` (
-  `numeroCadastro` int not null primary key unique auto_increment,
+  `numeroCadastro` int not null primary key unique,
   `nome` VARCHAR(45) NOT NULL,
   `Fk_endereco` INT NOT NULL,
   `telefone` VARCHAR(15) NOT NULL,
@@ -51,9 +51,9 @@ CREATE TABLE `Funcionario` (
     FOREIGN KEY (`Fk_endereco`) REFERENCES `Endereco` (`idEndereco`)
     );
     
-insert into Funcionario values (null, 'João Pedro', 1, '(47) 9 32851753', 'test@hotmail',
+insert into Funcionario values (0435, 'João Pedro', 1, '(47) 9 32851753', 'test@hotmail',
  '847354575827', '1840-08-02', 'Masculino', '23432345678', now(),'Tecelão III','3ºTurno' );
-select * from funcionario;
+select * from funcionario ;
 
 CREATE TABLE `Cliente` (
   `cnpj` VARCHAR(20) primary key not null unique,
@@ -110,17 +110,17 @@ INSERT INTO Deposito VALUES (null,'Depósito Central de Fios', 1, 1000000.00, 0.
 select * from Deposito;
 
 CREATE TABLE `Pedido` (
-  `idPedido` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `idPedido` varchar(45) PRIMARY KEY NOT NULL,
   `dataAbertura` DATE NOT NULL,
   `previsaoTermino` DATE NOT NULL,
   `producaoTotal` DOUBLE NOT NULL,
-  `FK_cliente` VARCHAR(20) NOT NULL,
+  `FK_cliente` VARCHAR(20)  NOT NULL,
   `descricao` VARCHAR(100) NULL,
   `status` VARCHAR(45) NOT NULL,
     FOREIGN KEY (`FK_cliente`) REFERENCES `Cliente` (`cnpj`)
    );
 
-INSERT INTO Pedido  VALUES (null,'2026-06-01', '2026-06-15', 1500.00, '12345678000199', 
+INSERT INTO Pedido  VALUES ('GH-675','2026-06-01', '2026-06-15', 1500.00, '12345678000199', 
 'Pedido de malha moletom para coleção de inverno', 'Em Produção');
 select * from Pedido;
 
@@ -148,17 +148,31 @@ select * from Malha where loteMalha = '89TY' ;
 
 CREATE TABLE `Producao` (
   `idProducao` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `FK_pedido` INT NOT NULL,
-  `qntPlanejada` VARCHAR(45) NOT NULL,
-  `saida` INT NOT NULL,
+  `FK_pedido` varchar(45) NOT NULL,
+  `qntPlanejada` double NOT NULL,
+  `saidaMateriaPrima` INT NOT NULL,
   `qntProduzida` DOUBLE NOT NULL,
-  `qualidade` VARCHAR(45) NOT NULL,
+  `qualidade` smallint NOT NULL,
     FOREIGN KEY (`FK_pedido`) REFERENCES `Pedido` (`idPedido`),
-    FOREIGN KEY (`saida`) REFERENCES `Malha` (`idMalha`)
+    FOREIGN KEY (`saidaMateriaPrima`) REFERENCES `Malha` (`idMalha`)
     );
 
-INSERT INTO Producao VALUES (null,1, '1500 kg', 1, 450.00, 'Primeira Qualidade');
+INSERT INTO Producao VALUES (null,'GH-675', 1500 , 1, 45.00, 2);
+INSERT INTO Producao VALUES (null,'GH-675', 1800 , 1, 20.00, 1);
+
 select * from Producao;
+
+CREATE TABLE `Operador` (
+  `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `Producao_idProducao` INT NOT NULL,
+  `Funcionario_numeroCadastro` int NOT NULL,
+    FOREIGN KEY (`Producao_idProducao`) REFERENCES `Producao` (`idProducao`),
+    FOREIGN KEY (`Funcionario_numeroCadastro`) REFERENCES `Funcionario` (`numeroCadastro`)
+    );
+select * From operador;
+insert into operador values (null,1,0435);
+
+
 
 CREATE TABLE `Fio` (
   `idFio` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -178,7 +192,8 @@ INSERT INTO Fio VALUES (null,'144KNC','98765432000188', 'Cru / Branco', 2400.00,
 
 select * from Fio;
 
-CREATE TABLE `entrada` (
+    
+CREATE TABLE `entradaMateriaPrima` (
   `ID` INT PRIMARY kEY AUTO_INCREMENT ,
   `Producao_idProducao` INT NOT NULL,
   `Fio_idFio` INT NOT NULL,
@@ -186,14 +201,14 @@ CREATE TABLE `entrada` (
     FOREIGN KEY (`Fio_idFio`) REFERENCES `Fio` (`idFio`)
     );
 
-INSERT INTO entrada VALUES (null,1, 1);
-INSERT INTO entrada VALUES (null,1, 2);
-INSERT INTO entrada VALUES (null,1, 3);
+INSERT INTO entradaMateriaPrima VALUES (null,1, 1);
+INSERT INTO entradaMateriaPrima VALUES (null,1, 2);
+INSERT INTO entradaMateriaPrima VALUES (null,1, 3);
 
-select * from entrada;
+select * from entradaMateriaPrima;
 
 CREATE TABLE `Maquina` (
-  `idMaquina` SMALLINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `idMaquina` SMALLINT PRIMARY KEY NOT NULL,
   `modelo` VARCHAR(45) NOT NULL,
   `tipo` VARCHAR(45) NOT NULL,
   `situacao` VARCHAR(45) NOT NULL,
@@ -201,11 +216,13 @@ CREATE TABLE `Maquina` (
   `qntVoltas` INT NOT NULL,
   `tempoExecucao` TIME NOT NULL,
   `enficiencia` DOUBLE NOT NULL,
-  `FK_Producao` INT NOT NULL,
+  `FK_Producao` INT ,
     FOREIGN KEY (`FK_Producao`) REFERENCES `Producao` (`idProducao`)
    );
 
-INSERT INTO Maquina VALUES (null,'Terrot S296', 'Circular Monofonte', 'Trabalhando', 22, 180000, '06:30:00', 92.5, 1);
+INSERT INTO Maquina VALUES (23,'Terrot S296', 'Circular Monofonte', 'Trabalhando', 22, 180000, '06:30:00', 92.5, 1);
+INSERT INTO Maquina VALUES (18,'Terrot S295', 'Circular Monofonte', 'Trabalhando', 20, 1800, '06:30:00', 96.5, null);
+
 select * from Maquina;
 
 CREATE TABLE `Fio_no_Deposito` (
@@ -237,14 +254,27 @@ INSERT INTO Malha_no_Deposito VALUES (null,6, 1,'A03');
 
 select * from Malha_no_Deposito;
 
-CREATE TABLE `Operador` (
-  `ID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `Producao_idProducao` INT NOT NULL,
-  `Funcionario_numeroCadastro` int NOT NULL,
-    FOREIGN KEY (`Producao_idProducao`) REFERENCES `Producao` (`idProducao`),
-    FOREIGN KEY (`Funcionario_numeroCadastro`) REFERENCES `Funcionario` (`numeroCadastro`)
-    );
 
+
+select  p.idProducao as Producao, p.FK_pedido as Pedido , p.qntPlanejada as Quantidade_Planejada, 
+p.saidaMateriaPrima as ID_Malha, p.qntProduzida as Quantidade_Produzida,
+ p.qualidade as Qualidade, o.Funcionario_numeroCadastro as Operador,
+ ma.idMaquina as Maquina, f.Fio_idFio as Fio
+from Producao p right join Pedido ped on p.FK_pedido = ped.idPedido
+right join Malha m on p.saidaMateriaPrima = m.idMalha
+inner join entradaMateriaPrima f on p.idProducao = f.Producao_idProducao
+right join Maquina ma on p.idProducao = ma.FK_Producao
+right join Operador o on p.idProducao = o.Producao_idProducao
+where  p.FK_pedido = 'GH-675' or p.idProducao = '2';
+
+ SELECT 
+   p.idProducao as Producao, p.FK_pedido AS Pedido, p.qntPlanejada AS Quantidade_Planejada, 
+    p.saidaMateriaPrima AS ID_Malha, p.qntProduzida AS Quantidade_Produzida, 
+    p.qualidade AS Qualidade, o.Funcionario_numeroCadastro AS Operador 
+    FROM Producao p 
+    RIGHT JOIN Pedido ped ON p.FK_pedido = ped.idPedido 
+    RIGHT JOIN Operador o ON p.idProducao = o.Producao_idProducao 
+    WHERE p.idProducao = '1';
 
 
  

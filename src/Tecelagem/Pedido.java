@@ -6,7 +6,7 @@ import Enumeradores.StatusProducao;
 import Pessoas.Cliente;
 
 public class Pedido {
-	private int id;
+	private String idPedido;
 	private LocalDate dataAbertura;
 	private LocalDate privisaoTerminio;
 	private double producaoTotal;
@@ -16,7 +16,7 @@ public class Pedido {
 	
 	
 	public Pedido() {
-		id = 0;
+		idPedido = null;
 		dataAbertura = null;
 		privisaoTerminio = null;
 		producaoTotal = 0;
@@ -26,9 +26,9 @@ public class Pedido {
 		
 	}
 	
-	public Pedido(int id, LocalDate dataAbertura, LocalDate privisaoTerminio, double producaoTotal, Cliente cliente,
+	public Pedido(String id, LocalDate dataAbertura, LocalDate privisaoTerminio, double producaoTotal, Cliente cliente,
 			String descricao, String status) {
-		this.setId(id);
+		this.setIdPedido(id);
 		this.setDataAbertura(dataAbertura);
 		this.setPrivisaoTerminio(privisaoTerminio);
 		this.setProducaoTotal(producaoTotal);
@@ -39,11 +39,11 @@ public class Pedido {
 	
 	
 	
-	public int getId() {
-		return id;
+	public String getIdPedido() {
+		return this.idPedido;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdPedido(String id) {
+		this.idPedido = id;
 	}
 	public LocalDate getDataAbertura() {
 		return dataAbertura;
@@ -85,13 +85,13 @@ public class Pedido {
 	@Override
 	public String toString() {
 		String str;
-		str = 	"ID: " + id + 
-				"\nData de Abertura: " + dataAbertura + 
-				"\nPrevisão de Término: " + privisaoTerminio + 
-				"\nProdução Total: " + producaoTotal + 
+		str = 	"ID do Pedido: " + getIdPedido() + 
+				"\nData de Abertura: " + getDataAbertura() + 
+				"\nPrevisão de Término: " + getPrivisaoTerminio() + 
+				"\nProdução Total: " + getProducaoTotal() + 
 				"\nCliente: " + cliente.getNomeFantasia() + 
-				"\nDescrição: "+ descricao + 
-				"\nStatus: " + status.name();
+				"\nDescrição: "+ getDescricao() + 
+				"\nStatus: " + getStatus();
 		return str;
 	}
 	
