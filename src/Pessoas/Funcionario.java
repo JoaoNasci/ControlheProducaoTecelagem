@@ -7,26 +7,29 @@ import Enumeradores.*;
 
 public class Funcionario extends PessoaFisica {
 	private String pis;
-	private String numeroCadastro;
+	private int numeroCadastro;
 	private LocalDate dataAdmissao;
 	private Cargo cargo;
-	private double salario;
 	private Turno turno;
 	
 	public Funcionario() {
+		this.pis = null;
+		this.numeroCadastro = 0;
+		this.dataAdmissao = null;
 		this.cargo = null;
-		this.salario = 0.0;
+		this.turno = null;
+		
 	}
 	
-	public Funcionario(String nome, Endereco endereco, Telefone telefone, String email, String cpf
-					,  LocalDate dataNascimento, String sexo,String pis, String numeroCadastro, String dataAdmissao, String cargo, double salario, String turno) {
+	public Funcionario(String nome, Endereco endereco, String telefone, String email, String cpf
+					,  LocalDate dataNascimento, String sexo,String pis, int numeroCadastro, 
+					String dataAdmissao, String cargo, String turno) {
 		
 		super(nome, endereco, telefone, email, cpf, dataNascimento, sexo);
 		this.setPis(pis);
 		this.setNumeroCadastro(numeroCadastro);
 		this.setDataAdmissao(LocalDate.parse(dataAdmissao));
 		this.setCargo(cargo);
-		this.setSalario(salario);
 		this.setTurno(turno);
 		
 	}
@@ -39,11 +42,11 @@ public class Funcionario extends PessoaFisica {
 		this.pis = pis;
 	}
 	
-	public String getNumeroCadastro() {
+	public int getNumeroCadastro() {
 		return numeroCadastro;
 	}
 	
-	public void setNumeroCadastro(String numeroCadastro) {
+	public void setNumeroCadastro(int numeroCadastro) {
 		this.numeroCadastro = numeroCadastro;
 	}
 	
@@ -63,14 +66,6 @@ public class Funcionario extends PessoaFisica {
 		this.cargo = Cargo.valueOf(cargo.toUpperCase().trim());
 	}
 	
-	public double getSalario() {
-		return salario;
-	}
-	
-	public void setSalario(double salario) {
-		this.salario = salario;
-	}
-	
 	
 	public String getTurno() {
 		return turno.name();
@@ -88,7 +83,6 @@ public class Funcionario extends PessoaFisica {
 		str += "Número de Cadastro: " + this.getNumeroCadastro() + "\n";
 		str += "Data de Admissão: " + this.getDataAdmissao() + "\n";
 		str += "Cargo: " + this.getCargo() + "\n";
-		str += "Salário: R$" + this.getSalario() + "\n";
 		str += "Turno: " + this.getTurno() + "\n";
 		
 		return str;

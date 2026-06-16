@@ -22,7 +22,7 @@ public abstract class PessoaJuridica extends Pessoa {
 		
 	}
 	
-	public PessoaJuridica(String nome, Endereco endereco, Telefone telefone, String email, String cnpj,
+	public PessoaJuridica(String nome, Endereco endereco, String telefone, String email, String cnpj,
 			String inscricaoEstadual, String nomeFantasia, String porteEmpresa, LocalDate dataFundacao, String status) {
 		super(nome, endereco, telefone, email);
 		this.setCnpj(cnpj);

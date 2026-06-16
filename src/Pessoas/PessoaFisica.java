@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import EnderecoContatos.*;
 import Enumeradores.Sexo;
 
-public class PessoaFisica extends Pessoa {
+public abstract class PessoaFisica extends Pessoa {
 	private String cpf;
 	private LocalDate dataNascimento;
 	private Sexo sexo;
@@ -16,7 +16,7 @@ public class PessoaFisica extends Pessoa {
 		
 	}
 	
-	public PessoaFisica(String nome, Endereco endereco, Telefone telefone, String email, String cpf, LocalDate dataNascimento, String sexo) {
+	public PessoaFisica(String nome, Endereco endereco, String telefone, String email, String cpf, LocalDate dataNascimento, String sexo) {
 		super(nome, endereco, telefone, email);
 		this.setCpf(cpf);
 		this.setDataNascimento(dataNascimento);
